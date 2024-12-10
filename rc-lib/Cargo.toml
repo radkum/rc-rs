@@ -1,0 +1,9 @@
+[package]
+name = "rc-lib"
+version = "0.1.0"
+authors = ["Radoslaw Kumorek <radoslaw.kumorekit@gmail.com"]
+edition = "2021"
+
+[dependencies]
+log = "*"
+snafu = "0.8.5"
