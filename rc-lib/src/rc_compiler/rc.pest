@@ -1,0 +1,31 @@
+WHITESPACE = _{ " " | "\t" | "\n" | "\r\n" | "\r" }
+
+decimal_positive = @{ ASCII_NONZERO_DIGIT ~ (ASCII_DIGIT|"_")* }
+decimal  = @{ "0" | decimal_positive }
+hex      = @{ "-"? ~ "0x" ~ (ASCII_HEX_DIGIT|"_")+ }
+hex_long = ${ hex ~ "L" }
+string = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
+name = {"\"" ~ (ASCII_ALPHANUMERIC | " " | "," | "(" | ")" | "-" | ".")* ~ "\"" }
+
+include_name = @{ ASCII_ALPHA_LOWER+ ~ ".h" }
+include = { "#include <" ~ include_name ~ ">" }
+includes = { include* }
+
+version_dword = { decimal ~"," ~ decimal ~ "," ~ decimal ~ "," ~ decimal }
+file_version = { "FILEVERSION" ~ version_dword }
+product_version = { "PRODUCTVERSION " ~ version_dword }
+fileflags_mask = { "FILEFLAGSMASK " ~ hex_long }
+version_info_header = { string ~ "VERSIONINFO"}
+version_info = {version_info_header ~ file_version? ~ product_version? ~ fileflags_mask?}
+version = {version_info ~ ("BEGIN" ~ block+ ~"END")?}
+
+block_header = {"BLOCK" ~ name}
+value_line = {"VALUE" ~ name ~ "," ~ hex ~ "," ~ decimal }
+value_block = { block_header ~ "BEGIN" ~ value_line* ~ "END" }
+string_line = {"VALUE" ~ name ~ "," ~ name }
+string_block = { block_header ~ "BEGIN" ~ string_line* ~ "END" }
+block = { block_header ~ "BEGIN" ~ ( string_block | value_block )* ~ "END" }
+
+icon = { string ~ "ICON" ~ name }
+
+res = { includes ~ (version | icon)+ }

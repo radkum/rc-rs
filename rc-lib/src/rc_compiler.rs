@@ -8,18 +8,11 @@ use crate::Result;
 use crate::OpenRcSnafu;
 use crate::WriteRcSnafu;
 
-mod file_block;
-use file_block::FileBlock;
-
-mod tokenizer;
-use tokenizer::Tokens;
-use tokenizer::Tokenizer;
-
-mod parser;
-use parser::Parser;
+mod rc_parser;
+use rc_parser::RcParser;
 
 pub struct ResourceCompiler {
-    file_block: Option<FileBlock>,
+    file_block: Option<String>,
 }
 
 impl ResourceCompiler {
@@ -38,12 +31,8 @@ impl ResourceCompiler {
     }
     
     fn parse(&mut self, s: String) -> Result<()> {
-
-        let tokenizer = Tokenizer::new();
-        let tokens = tokenizer.tokenize(s)?;
-
-        let parser = Parser::new();
-        self.file_block = Some(parser.parse(tokens)?);
+        //let parser = Parser::new();
+        //self.file_block = Some(parser.parse(tokens)?);
         Ok(())
     }
 
@@ -69,7 +58,7 @@ impl ResourceCompiler {
         let Some(ref file_block) = self.file_block else {
             return Err(crate::RcError::NotParsed{});
         };
-        out.write_all(&file_block.serialize()).context(WriteRcSnafu {})?;
+        //out.write_all(&file_block.serialize()).context(WriteRcSnafu {})?;
         Ok(())
     }
 }
