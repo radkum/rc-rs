@@ -20,11 +20,11 @@ version_info = {version_info_header ~ file_version? ~ product_version? ~ filefla
 version = {version_info ~ ("BEGIN" ~ block+ ~"END")?}
 
 block_header = {"BLOCK" ~ name}
-value_line = {"VALUE" ~ name ~ "," ~ hex ~ "," ~ decimal }
-value_block = { block_header ~ "BEGIN" ~ value_line* ~ "END" }
+var_file_line = {"VALUE" ~ name ~ "," ~ hex ~ "," ~ decimal }
+var_file_block = { block_header ~ "BEGIN" ~ var_file_line* ~ "END" }
 string_line = {"VALUE" ~ name ~ "," ~ name }
 string_block = { block_header ~ "BEGIN" ~ string_line* ~ "END" }
-block = { block_header ~ "BEGIN" ~ ( string_block | value_block )* ~ "END" }
+block = { block_header ~ "BEGIN" ~ ( string_block | var_file_block )* ~ "END" }
 
 icon = { string ~ "ICON" ~ name }
 

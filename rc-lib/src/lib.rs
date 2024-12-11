@@ -1,5 +1,5 @@
-mod rc_compiler;
 mod error;
+mod rc_compiler;
 
 pub(crate) use error::*;
 

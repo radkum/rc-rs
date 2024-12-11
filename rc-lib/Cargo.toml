@@ -6,6 +6,7 @@ edition = "2021"
 
 [dependencies]
 log = "*"
-snafu = "0.8.5"
 pest = "2.6"
 pest_derive = "2.6"
+smart-default = "0.7.1"
+snafu = "0.8.5"
