@@ -20,13 +20,13 @@ impl ResourceCompiler {
         Self::parse(s)
     }
 
-    fn parse_stream<R: Read>(reader: R) -> Result<Self> {
+    pub fn parse_stream<R: Read>(reader: R) -> Result<Self> {
         let s = Self::read(reader)?;
         Self::parse(s)
     }
 
     fn parse(s: String) -> Result<Self> {
-        let resources = RcParser::parse_string(s.as_str())?;
+        let resources = RcParser::parse_input_string(s.as_str())?;
         Ok(Self { resources })
     }
 

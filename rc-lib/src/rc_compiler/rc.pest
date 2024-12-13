@@ -14,10 +14,10 @@ includes = { include* }
 version_dword = { decimal ~"," ~ decimal ~ "," ~ decimal ~ "," ~ decimal }
 file_version = { "FILEVERSION" ~ version_dword }
 product_version = { "PRODUCTVERSION " ~ version_dword }
-fileflags_mask = { "FILEFLAGSMASK " ~ hex_long }
-version_info_header = { string ~ "VERSIONINFO"}
-version_info = {version_info_header ~ file_version? ~ product_version? ~ fileflags_mask?}
-version = {version_info ~ ("BEGIN" ~ block+ ~"END")?}
+file_flags_mask = { "FILEFLAGSMASK " ~ hex_long }
+version_info_tag = { string ~ "VERSIONINFO"}
+version_info_header = {version_info_tag ~ file_version? ~ product_version? ~ file_flags_mask?}
+version_info = {version_info_header ~ ("BEGIN" ~ block+ ~"END")?}
 
 block_header = {"BLOCK" ~ name}
 var_file_line = {"VALUE" ~ name ~ "," ~ hex ~ "," ~ decimal }
@@ -28,4 +28,4 @@ block = { block_header ~ "BEGIN" ~ ( string_block | var_file_block )* ~ "END" }
 
 icon = { string ~ "ICON" ~ name }
 
-res = { includes ~ (version | icon)+ }
+res = { includes ~ (version_info | icon)+ }

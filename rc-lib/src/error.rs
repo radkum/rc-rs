@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use snafu::prelude::*;
 
-use crate::rc_compiler::rc_parser::Rule;
+use crate::rc_compiler::rc_parser::{PestError, Rule};
 
 #[derive(Debug, Snafu)]
 #[snafu(visibility(pub(crate)))]
@@ -19,8 +19,14 @@ pub enum RcError {
     #[snafu(display("There is no parsed data"))]
     NotParsed {},
 
-    #[snafu(display("Failed to parse in function: {}. Error: {}", function_name, source))]
-    PestParsing { function_name: String, source: pest::error::Error<Rule> },
+    #[snafu(display("Failed to parse pest: {}", source))]
+    Pest { source: PestError },
 }
 
 pub type RcResult<T> = Result<T, RcError>;
+
+impl From<PestError> for RcError {
+    fn from(other: PestError) -> Self {
+        Self::Pest { source: other }
+    }
+}

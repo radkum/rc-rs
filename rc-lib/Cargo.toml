@@ -6,6 +6,7 @@ edition = "2021"
 
 [dependencies]
 log = "*"
+hex = "0.4"
 pest = "2.6"
 pest_derive = "2.6"
 smart-default = "0.7.1"
